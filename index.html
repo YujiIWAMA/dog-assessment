@@ -110,6 +110,44 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .footer-note{text-align:center;color:var(--dim);font-size:11px;padding:28px 0 0;font-family:var(--mono)}
 
+/* ---- care phase ---- */
+.phase-div{display:flex;align-items:center;gap:14px;margin:8px 2px 0;color:var(--amber)}
+.phase-div .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(232,163,23,.5),transparent)}
+.phase-div .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.care{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);border-top:3px solid var(--amber)}
+.care h3{font-size:16px;font-weight:900;margin-bottom:4px}
+.care .lead{font-size:13px;color:var(--dim);margin-bottom:16px}
+.care-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.care-card{border:1px solid var(--line);border-radius:12px;background:var(--bg2);padding:16px 12px;text-align:center;transition:.16s;position:relative}
+.care-card:hover{border-color:var(--amber);background:#232833;transform:translateY(-2px)}
+.care-card .emoji{font-size:30px;line-height:1;display:block;margin-bottom:8px}
+.care-card .clabel{font-size:13.5px;font-weight:700}
+.care-card.done{border-color:var(--amber);background:rgba(232,163,23,.08)}
+.care-card.done::after{content:"✓";position:absolute;top:8px;right:10px;color:var(--amber);font-family:var(--mono);font-weight:700;font-size:13px}
+.care-react{display:none;margin-top:14px;padding:14px 16px;border-radius:10px;background:var(--bg2);border-left:3px solid var(--amber);font-size:13.5px;line-height:1.7}
+.care-react.show{display:block;animation:drop .25s}
+.care-react .who{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.08em;display:block;margin-bottom:4px}
+.care-foot{margin-top:18px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-wrap:wrap}
+.care-foot .hintl{font-size:12px;color:var(--dim);margin-right:auto}
+.btn.amber{background:var(--amber);color:#3a2c05}
+.btn.amber:hover{background:#f2b32e}
+
+/* ---- ending overlay ---- */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(8,10,14,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex;animation:fadeo .35s}
+@keyframes fadeo{from{opacity:0}to{opacity:1}}
+.end-card{background:var(--panel);border:1px solid var(--line);border-radius:20px;max-width:440px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.6);text-align:center;padding:30px 26px 26px;animation:pop .4s cubic-bezier(.2,.8,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:none}}
+.end-card .endvid{width:120px;border-radius:16px;overflow:hidden;margin:0 auto 16px;box-shadow:0 8px 22px rgba(0,0,0,.5)}
+.end-card .endvid video{width:100%;display:block}
+.end-card .eyebrow2{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;margin-bottom:8px}
+.end-card h2{font-size:23px;font-weight:900;margin-bottom:10px}
+.end-card .did{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:14px 0}
+.end-card .did .chip{font-size:12px;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:5px 13px}
+.end-card .take{font-size:13.5px;color:var(--dim);line-height:1.8;margin:14px 0 20px;text-align:left;background:var(--bg2);border-radius:12px;padding:15px 17px;border-left:3px solid var(--accent)}
+.end-card .take b{color:var(--accent)}
+.end-card .endbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
 @media(max-width:800px){
   .stage{grid-template-columns:1fr;gap:16px;padding-top:18px}
 }
@@ -140,6 +178,12 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .reviewbar .rb-top{gap:10px}
   .reviewbar .spacer{display:none}
   .summary .stats{gap:16px}
+  .care{padding:16px}
+  .care-foot .hintl{margin-right:0;width:100%;text-align:center}
+  .care-foot .btn{width:100%}
+  .end-card{padding:26px 20px 22px}
+  .end-card h2{font-size:20px}
+  .end-card .endbtns .btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -201,6 +245,34 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
           <button class="btn" id="reviewBtn" onclick="Assess.review()">ふりかえりを表示</button>
         </div>
         <div class="summary" id="summary"></div>
+      </div>
+
+      <div class="phase-div"><span class="ln"></span><span class="lbl">最後に</span><span class="ln"></span></div>
+
+      <div class="care">
+        <h3>対応する（ケア）</h3>
+        <p class="lead">調べて分かったことをふまえて、プーアルに何をしてあげますか。タップすると反応が返ってきます。いくつ選んでもかまいません。</p>
+        <div class="care-grid" id="careGrid"></div>
+        <div class="care-react" id="careReact"></div>
+        <div class="care-foot">
+          <span class="hintl" id="careHint">まずは一つ、してあげましょう。</span>
+          <button class="btn amber" id="endBtn" onclick="Assess.endSession()">セッションを終える →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ending overlay -->
+  <div class="overlay" id="overlay">
+    <div class="end-card">
+      <div class="endvid"><video id="endVid" autoplay muted loop playsinline></video></div>
+      <div class="eyebrow2">Session complete</div>
+      <h2>今日のケア、おしまい</h2>
+      <div class="did" id="endDid"></div>
+      <div class="take" id="endTake"></div>
+      <div class="endbtns">
+        <button class="btn" onclick="Assess.restart()">もう一度</button>
+        <button class="btn ghost" onclick="Assess.closeEnd()">閉じる</button>
       </div>
     </div>
   </div>
@@ -270,8 +342,22 @@ const CATEGORIES = [
   }
 ];
 
+const CARE = [
+  {id:'treat', emoji:'🍪', label:'おやつをあげる',
+   react:'『くるくる』を差し出すと…少し匂いを嗅いで、笑顔で部屋を走り回った。'},
+  {id:'feed', emoji:'🥣', label:'ごはんをあげる',
+   react:'カリカリを出すとよだれが漏れ出る。しっぽをふって天までとどきそうに踊り出した'},
+  {id:'bath', emoji:'🛁', label:'お風呂に入れる',
+   react:'ぬるま湯にそっとつけると気持ちよさそうに、舟をこぎはじめた。'},
+  {id:'love', emoji:'🫶', label:'愛でる', chief:true,
+   react:'首をやさしくかくと、目を細め、足が思わず動いた。幸せそう。'},
+  {id:'sleep', emoji:'😴', label:'寝かしつける',
+   react:'暖かいタオルにくるむと、丸くなってすやすや。'}
+];
+
 const Assess = (function(){
   let seen=0, total=0, reviewed=false;
+  const doneCare=new Set();
   const $=s=>document.querySelector(s);
 
   function build(){
@@ -302,10 +388,21 @@ const Assess = (function(){
       wrap.appendChild(tab);
     });
     $('#totalCount').textContent=total;
+
+    // care cards
+    const cg=$('#careGrid');
+    CARE.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='care-card'; b.dataset.id=c.id;
+      b.innerHTML=`<span class="emoji">${c.emoji}</span><span class="clabel">${c.label}</span>`;
+      b.onclick=()=>doCare(c,b);
+      cg.appendChild(b);
+    });
+    // reuse patient video in the ending
+    $('#endVid').src = VIDEO_SRC;
   }
 
   function toggleTab(btn){ btn.parentElement.classList.toggle('open'); }
-
   function toggleItem(btn){
     const item=btn.parentElement;
     item.classList.toggle('open');
@@ -314,23 +411,28 @@ const Assess = (function(){
     }
   }
 
+  function doCare(c,btn){
+    btn.classList.add('done'); doneCare.add(c.id);
+    const r=$('#careReact');
+    r.innerHTML=`<span class="who">プーアル</span>${c.react}`;
+    r.className='care-react show';
+    $('#careHint').textContent = doneCare.size>=1 ? '終わったら「セッションを終える」へ。' : '';
+  }
+
   function review(){
     reviewed=!reviewed;
     document.body.classList.toggle('reviewOn', reviewed);
     $('#reviewBtn').textContent = reviewed ? 'ふりかえりを隠す' : 'ふりかえりを表示';
     const sum=$('#summary');
     if(!reviewed){ sum.classList.remove('show'); return; }
-
-    // count relevant vs seen
     let relTotal=0, relSeen=0, irrSeen=0;
     document.querySelectorAll('.item').forEach(el=>{
-      const rel=el.classList.contains('rel');
-      const s=el.classList.contains('seen');
+      const rel=el.classList.contains('rel'), s=el.classList.contains('seen');
       if(rel){ relTotal++; if(s) relSeen++; else el.classList.add('missed'); }
       else if(s) irrSeen++;
     });
     sum.innerHTML=`
-      この主訴（<b>下痢・少し元気がない</b>）では、<b>脱水の程度・便の性状・食事の変化・腹部の所見・基本バイタル</b>が診断の鍵でした。
+      この主訴（<b>首をかいてもらえるのは気持ちがいい「もっとやって」</b>）では、<b>掻き方の程度・首の性状・機嫌の変化・食事量・おやつの頻度</b>が診断の鍵でした。
       関係の薄い項目（毛色や名前の由来など）に時間をかけず、必要な情報にたどり着けたかを確認しましょう。
       未確認の「役立つ情報」は<b style="color:var(--amber)">見落とし</b>として各項目に表示しています。
       <div class="stats">
@@ -342,8 +444,43 @@ const Assess = (function(){
     sum.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
 
+  function endSession(){
+    const did=$('#endDid'); did.innerHTML='';
+    if(doneCare.size===0){
+      did.innerHTML='<span class="chip">そっと見守った</span>';
+    }else{
+      CARE.filter(c=>doneCare.has(c.id)).forEach(c=>{
+        did.innerHTML+=`<span class="chip">${c.emoji} ${c.label}</span>`;
+      });
+    }
+    let take='';
+    if(doneCare.has('love')){
+      take=`プーアルの<b>「もっと首をかいて」</b>という願いに、ちゃんと応えられましたね。<br><br>調べて、気づいて、手を当てる。相手の訴えを置き去りにしないことが、アセスメントとケアの出発点です。`;
+    }else{
+      take=`プーアルは体調のサインをいくつも出していました。<br><br>調べて、気づいて、手を当てる。次はぜひ、この子がいちばん望んでいた<b>「首をかいてほしい」</b>という訴えにも応えてあげてください。`;
+    }
+    $('#endTake').innerHTML=take;
+    $('#overlay').classList.add('show');
+  }
+  function closeEnd(){ $('#overlay').classList.remove('show'); }
+  function restart(){
+    // reset investigation
+    seen=0; $('#seenCount').textContent=0;
+    document.querySelectorAll('.item').forEach(el=>el.classList.remove('open','seen','missed'));
+    document.querySelectorAll('.tab').forEach(el=>el.classList.remove('open'));
+    reviewed=false; document.body.classList.remove('reviewOn');
+    $('#reviewBtn').textContent='ふりかえりを表示'; $('#summary').classList.remove('show');
+    // reset care
+    doneCare.clear();
+    document.querySelectorAll('.care-card').forEach(el=>el.classList.remove('done'));
+    $('#careReact').className='care-react'; $('#careReact').innerHTML='';
+    $('#careHint').textContent='まずは一つ、してあげましょう。';
+    closeEnd();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
   build();
-  return {toggleTab,toggleItem,review};
+  return {toggleTab,toggleItem,review,doCare,endSession,closeEnd,restart};
 })();
 </script>
 </body>
