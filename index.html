@@ -231,7 +231,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
         <div class="vidcap"><span class="dot"></span>プーアル · 観察中</div>
       </div>
 
-      <p class="instr">この子について、<b>どの情報を調べると役に立つ</b>でしょうか。下のタブを開き、自分で必要だと思う項目を選んで調べてみましょう。<b>関係のない項目も混ざっています。</b></p>
+      <p class="instr">この子について、<b>どの情報を調べると役に立つ</b>でしょうか。下のタブを開き、自分で必要だと思う項目を選んで調べてみましょう。</p>
 
       <div class="tabs" id="tabs"></div>
 
@@ -289,34 +289,34 @@ const CATEGORIES = [
   {
     name:"問診（飼い主への聞き取り）", meta:"7項目",
     items:[
-      {label:"便の回数と性状", relevant:true, finding:"昨日から1日4〜5回、軟便〜水様便。血は混じっていない。", note:"主訴の下痢そのものを評価する基本情報。重症度と原因の手がかりになる。"},
-      {label:"食欲・元気の変化", relevant:true, finding:"食欲はいつもの半分。でも呼べば寄ってくる。", note:"全身状態の指標。食欲低下は脱水・消耗のサイン。"},
+      {label:"便の回数と性状", relevant:true, finding:"1日2回、いいのが出ることが多い。", note:"下痢そのものを評価する基本情報。重症度と原因の手がかりになる。"},
+      {label:"食欲・元気の変化", relevant:true, finding:"食欲は旺盛", note:"全身状態の指標。食欲低下は脱水・消耗のサイン。"},
       {label:"飲水量", relevant:true, finding:"水はいつもよりよく飲んでいる。", note:"下痢による水分喪失を代償している可能性。脱水評価につながる。"},
-      {label:"嘔吐の有無", relevant:true, finding:"今朝1回、少量の泡状のものを吐いた。", note:"消化器症状の広がりを確認。嘔吐が加わると脱水が進みやすい。"},
-      {label:"誤食の可能性", relevant:true, finding:"昨日、ゴミ箱をあさっていた形跡がある。", note:"下痢の原因検索として重要。異物・中毒の除外につながる。"},
-      {label:"好きなボールの色", relevant:false, finding:"青いボールがお気に入り。", note:"かわいいが、今回の体調評価には関係しない情報。"},
-      {label:"名前の由来", relevant:false, finding:"飼い主が中国茶好きで命名。", note:"背景としては楽しいが、アセスメントには不要。"}
+      {label:"嘔吐の有無", relevant:true, finding:"今朝1回、少量の胃液を吐いた。", note:"消化器症状の広がりを確認。嘔吐が加わると脱水が進みやすい。"},
+      {label:"誤食の可能性", relevant:true, finding:"昨日ほこりや髪の毛を食べた形跡があった", note:"下痢の原因検索として重要。異物・中毒の除外につながる。"},
+      {label:"好きなボールの色", relevant:false, finding:"青や黄色のおもちゃがお気に入り。", note:"かわいいが、今回の体調評価には関係しない情報。"},
+      {label:"名前の由来", relevant:false, finding:"飼い主がドラゴンボール好きで命名。", note:"背景としては楽しいが、アセスメントには不要。"}
     ]
   },
   {
     name:"身体観察", meta:"7項目",
     items:[
-      {label:"腹部の触診", relevant:true, finding:"軽く触ると嫌がる。お腹はやや張っている。", note:"腹痛・ガス貯留の確認。消化器トラブルの局在を探る。"},
+      {label:"腹部の触診", relevant:true, finding:"お腹は触ってほしそうに見せてくる。", note:"腹痛・ガス貯留の確認。消化器トラブルの局在を探る。"},
       {label:"皮膚のハリ（脱水チェック）", relevant:true, finding:"首の後ろの皮膚をつまむと戻りがやや遅い。", note:"脱水の程度を見る代表的な観察。下痢では最重要のひとつ。"},
-      {label:"歯茎の色・湿り", relevant:true, finding:"歯茎はうすいピンクで、少し乾いている。", note:"循環と脱水の指標（粘膜の色・湿潤）。"},
+      {label:"歯茎の色・湿り", relevant:true, finding:"歯茎はピンクで、少し乾いている。", note:"循環と脱水の指標（粘膜の色・湿潤）。"},
       {label:"首の状態（主訴の部位）", relevant:true, finding:"かくと気持ちよさそう。発赤やかさぶたはない。", note:"訴えのある部位の確認。異常なしを確かめるのも観察。"},
-      {label:"肛門まわりの観察", relevant:true, finding:"便で汚れ、皮膚が赤くなっている。", note:"下痢による皮膚炎の有無。ケアの必要性に直結。"},
-      {label:"毛づやのチェック", relevant:false, finding:"毛づやはまずまず。", note:"慢性の栄養状態の参考にはなるが、今回の急性症状では優先度は低い。"},
+      {label:"肛門まわりの観察", relevant:true, finding:"きれい。異臭はない", note:"下痢による皮膚炎の有無。ケアの必要性に直結。"},
+      {label:"毛づやのチェック", relevant:false, finding:"毛づやはよい。", note:"慢性の栄養状態の参考にはなるが、今回の急性症状では優先度は低い。"},
       {label:"しっぽの長さを測る", relevant:false, finding:"25cm。前回と変わらず。", note:"体調評価とは無関係の項目。"}
     ]
   },
   {
     name:"バイタルサイン", meta:"5項目",
     items:[
-      {label:"体温", relevant:true, finding:"39.4℃。やや高め。", note:"感染・炎症の有無を示す基本バイタル。"},
+      {label:"体温", relevant:true, finding:"38.0℃。", note:"感染・炎症の有無を示す基本バイタル。"},
       {label:"心拍数", relevant:true, finding:"180回/分。少し速い。", note:"脱水・痛み・発熱で上がる。全身状態の指標。"},
       {label:"呼吸数", relevant:true, finding:"32回/分。落ち着いている範囲。", note:"基本バイタルとして必ず押さえる。"},
-      {label:"体重", relevant:true, finding:"4.0kg。1週間前より0.2kg減。", note:"脱水・消耗の客観指標。薬用量の基準にもなる。"},
+      {label:"体重", relevant:true, finding:"4.3kg。1週間前より0.2kg減。", note:"脱水・消耗の客観指標。薬用量の基準にもなる。"},
       {label:"全力で走る速さ", relevant:false, finding:"本気を出すとけっこう速い。", note:"面白いが臨床評価には使わない。"}
     ]
   },
